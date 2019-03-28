@@ -42,10 +42,12 @@ public class TimeInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object handler) throws Exception {
         log.info("preHandle");
+        Long startTime = new Date().getTime();
         //只有返回true才会继续向下执行，返回false取消当前请求
         log.info("请求的类名：{}", ((HandlerMethod)handler).getBean().getClass().getName());
         log.info("请求的方法名：{}", ((HandlerMethod)handler).getMethod().getName());
-        httpServletRequest.setAttribute("startTime",new Date().getTime());
+        httpServletRequest.setAttribute("startTime",startTime);
+        log.info("preHandle 耗时：{}",new Date().getTime() - startTime);
         return true;
     }
 
