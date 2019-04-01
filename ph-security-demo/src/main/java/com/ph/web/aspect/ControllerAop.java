@@ -20,7 +20,7 @@ import javax.servlet.http.HttpSession;
  */
 @Slf4j
 @Aspect //创建一个切面类
-@Component
+//@Component
 public class ControllerAop {
 
     //指定切点  匹配com.ph.web.controller包及其子包下的所有类的 返回值为任意的 所有方法
@@ -56,7 +56,7 @@ public class ControllerAop {
      *
      */
 
-    @Around("executeService()")
+    //@Around("executeService()")
     public void doAroundAdvice(ProceedingJoinPoint proceedingJoinPoint){
         log.info("我是环绕通知");
         log.info("环绕通知的目标方法名：{}",proceedingJoinPoint.getSignature().getName());

@@ -11,7 +11,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
  * @date 2019\3\27 0027   16:13
  */
 
-@Configuration //springboot 配置类
+//@Configuration //springboot 配置类
 public class WebMvcConfig extends WebMvcConfigurerAdapter {
 
     @Autowired
