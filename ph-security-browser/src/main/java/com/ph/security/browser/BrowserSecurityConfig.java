@@ -1,5 +1,7 @@
 package com.ph.security.browser;
 
+import com.ph.security.browser.authentication.MyAuthenticationFailureHandler;
+import com.ph.security.browser.authentication.MyAuthenticationSuccessHandler;
 import com.ph.security.core.properties.SecurityProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -8,6 +10,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
 
 /**
  * @author penghui
@@ -19,6 +22,10 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private SecurityProperties securityProperties;
+    @Autowired
+    private MyAuthenticationSuccessHandler successHandler;
+    @Autowired
+    private MyAuthenticationFailureHandler failureHandler;
 
     @Bean
     public PasswordEncoder passwordEncoder(){
@@ -31,7 +38,10 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
        // http.httpBasic()                     //httpBasic弹框登录
         http.formLogin()                       //表单登录,默认进行表单登录处理的过滤器是UsernamePasswordAuthenticationFilter
-            .loginPage("/auth/require")          //自定义登录页面
+            .loginPage("/auth/require")          //自定义登录请求
+//            .loginPage("/login.html")          //自定义登录页面
+            .successHandler(successHandler)     //自定义登录成功后的处理
+            .failureHandler(failureHandler)    //自定义登录失败后的处理
             .loginProcessingUrl("/userlogin")  //表单登录时处理请求的url ,UsernamePasswordAuthenticationFilter默认处理的表单url是/login
             .and()
             .authorizeRequests()               //对请求做授权

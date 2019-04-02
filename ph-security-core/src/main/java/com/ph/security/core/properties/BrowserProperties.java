@@ -1,5 +1,6 @@
 package com.ph.security.core.properties;
 
+import com.ph.security.core.constant.LoginTypeEnum;
 import lombok.Data;
 
 /**
@@ -11,4 +12,6 @@ import lombok.Data;
 public class BrowserProperties {
 
     private String loginPage = "/login.html";
+
+    private LoginTypeEnum loginType = LoginTypeEnum.JSON;
 }
