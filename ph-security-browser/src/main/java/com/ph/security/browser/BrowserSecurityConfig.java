@@ -46,6 +46,7 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
             .and()
             .authorizeRequests()               //对请求做授权
             .antMatchers("/auth/require",
+                    "/valicateCode/createImageCode",
                     securityProperties.getBrowserProperties().getLoginPage())
             .permitAll()                       //匹配到这个url的时候，不需要身份认证
             .anyRequest()                      //任何请求

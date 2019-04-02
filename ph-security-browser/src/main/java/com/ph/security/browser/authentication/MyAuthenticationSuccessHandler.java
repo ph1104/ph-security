@@ -35,6 +35,7 @@ public class MyAuthenticationSuccessHandler extends SavedRequestAwareAuthenticat
     @Override
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
         log.info("登录成功");
+        //根据配置文件中配置的登录后返回类型判断  是进行重定向还是返回json
         if(LoginTypeEnum.JSON.equals(securityProperties.getBrowserProperties().getLoginType())){
             httpServletResponse.setContentType("application/json;charset=UTF-8");
             httpServletResponse.getWriter().write(objectMapper.writeValueAsString(authentication));
