@@ -3,6 +3,7 @@ package com.ph.security.browser;
 import com.ph.security.browser.authentication.MyAuthenticationFailureHandler;
 import com.ph.security.browser.authentication.MyAuthenticationSuccessHandler;
 import com.ph.security.core.properties.SecurityProperties;
+import com.ph.security.core.validate.ValidateCodeFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,6 +11,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 
 /**
@@ -26,6 +28,8 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
     private MyAuthenticationSuccessHandler successHandler;
     @Autowired
     private MyAuthenticationFailureHandler failureHandler;
+//    @Autowired
+//    private ValidateCodeFilter validateCodeFilter;
 
     @Bean
     public PasswordEncoder passwordEncoder(){
@@ -36,8 +40,11 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        ValidateCodeFilter validateCodeFilter = new ValidateCodeFilter();
+        validateCodeFilter.setAuthenticationFailureHandler(failureHandler);
        // http.httpBasic()                     //httpBasic弹框登录
-        http.formLogin()                       //表单登录,默认进行表单登录处理的过滤器是UsernamePasswordAuthenticationFilter
+        http.addFilterBefore(validateCodeFilter,UsernamePasswordAuthenticationFilter.class)  //将图片验证码过滤器加入到UsernamePassword过滤器之前
+            .formLogin()                       //表单登录,默认进行表单登录处理的过滤器是UsernamePasswordAuthenticationFilter
             .loginPage("/auth/require")          //自定义登录请求
 //            .loginPage("/login.html")          //自定义登录页面
             .successHandler(successHandler)     //自定义登录成功后的处理
@@ -47,7 +54,7 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
             .authorizeRequests()               //对请求做授权
             .antMatchers("/auth/require",
                     "/valicateCode/createImageCode",
-                    securityProperties.getBrowserProperties().getLoginPage())
+                    securityProperties.getBrowser().getLoginPage())
             .permitAll()                       //匹配到这个url的时候，不需要身份认证
             .anyRequest()                      //任何请求
             .authenticated()                   //都需要身份认证

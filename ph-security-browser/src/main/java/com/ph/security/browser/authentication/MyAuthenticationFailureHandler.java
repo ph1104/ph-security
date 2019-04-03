@@ -36,10 +36,10 @@ public class MyAuthenticationFailureHandler extends SimpleUrlAuthenticationFailu
     @Override
     public void onAuthenticationFailure(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException exception) throws IOException, ServletException {
         log.info("登录失败");
-        if(LoginTypeEnum.JSON.equals(securityProperties.getBrowserProperties().getLoginType())) {
+        if(LoginTypeEnum.JSON.equals(securityProperties.getBrowser().getLoginType())) {
             httpServletResponse.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
             httpServletResponse.setContentType("application/json;charset=UTF-8");
-            httpServletResponse.getWriter().write(objectMapper.writeValueAsString(exception));
+            httpServletResponse.getWriter().write(objectMapper.writeValueAsString(exception.getMessage()));
         }else{
             super.onAuthenticationFailure(httpServletRequest,httpServletResponse,exception);
         }

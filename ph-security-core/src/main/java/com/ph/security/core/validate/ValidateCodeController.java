@@ -1,5 +1,8 @@
 package com.ph.security.core.validate;
 
+import com.ph.security.core.constant.CommonConstant;
+import com.ph.security.core.properties.SecurityProperties;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.social.connect.web.HttpSessionSessionStrategy;
 import org.springframework.social.connect.web.SessionStrategy;
 import org.springframework.web.bind.ServletRequestUtils;
@@ -29,8 +32,8 @@ import java.util.Random;
 public class ValidateCodeController {
 
 
-
-    private static final String SESSION_KEY = "SESSION_KEY_IAMGE_CODE";
+    @Autowired
+    private SecurityProperties securityProperties;
 
     private SessionStrategy sessionStrategy = new HttpSessionSessionStrategy();
 
@@ -50,7 +53,7 @@ public class ValidateCodeController {
     @GetMapping("/createImageCode")
     public void createImageCode(HttpServletRequest request, HttpServletResponse response) throws IOException {
         ImageCode imageCode = generateImage(request);
-        sessionStrategy.setAttribute(new ServletWebRequest(request),SESSION_KEY,imageCode);
+        sessionStrategy.setAttribute(new ServletWebRequest(request),CommonConstant.SESSION_KEY,imageCode);
         ImageIO.write(imageCode.getImage(),"JPEG",response.getOutputStream());
 
     }
@@ -58,8 +61,8 @@ public class ValidateCodeController {
 
 
     public ImageCode generateImage(HttpServletRequest request) {
-        int width = 67;
-        int height = 32;
+        int width = securityProperties.getCode().getImage().getWidth();
+        int height = securityProperties.getCode().getImage().getHeight();
         BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 
         Graphics g = image.getGraphics();
@@ -80,7 +83,7 @@ public class ValidateCodeController {
 
         String sRand = "";
         //生成四位的图形验证码
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < securityProperties.getCode().getImage().getLength(); i++) {
             String rand = String.valueOf(random.nextInt(10));
             sRand += rand;
             g.setColor(new Color(20 + random.nextInt(110), 20 + random.nextInt(110), 20 + random.nextInt(110)));
@@ -89,7 +92,7 @@ public class ValidateCodeController {
 
         g.dispose();
 
-        return new ImageCode(image, sRand,60);
+        return new ImageCode(image, sRand,securityProperties.getCode().getImage().getExpireIn());
     }
 
     /**

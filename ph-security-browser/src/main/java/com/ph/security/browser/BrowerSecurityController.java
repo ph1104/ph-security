@@ -56,7 +56,7 @@ public class BrowerSecurityController {
             log.info("引发跳转的请求是：{}",url);
             if(StringUtils.endsWithIgnoreCase(url,".html")){
                 //如果是html页面，跳转到登录页面
-                redirectStrategy.sendRedirect(request,response,securityProperties.getBrowserProperties().getLoginPage());
+                redirectStrategy.sendRedirect(request,response,securityProperties.getBrowser().getLoginPage());
             }
         }
         return "访问的服务需要身份认证,请先登录";
