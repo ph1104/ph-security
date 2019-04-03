@@ -1,5 +1,7 @@
 package com.ph.security.core.validate;
 
+import com.ph.security.core.validate.sms.ValidateCode;
+
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -10,5 +12,5 @@ import javax.servlet.http.HttpServletRequest;
  */
 public interface ValidateCodeGenerator {
 
-    ImageCode generateImage(HttpServletRequest request);
+    ValidateCode generateCode(HttpServletRequest request);
 }

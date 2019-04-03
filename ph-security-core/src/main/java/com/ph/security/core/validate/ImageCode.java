@@ -1,7 +1,7 @@
 package com.ph.security.core.validate;
 
 
-import com.ph.security.core.validate.sms.SmsCode;
+import com.ph.security.core.validate.sms.ValidateCode;
 import lombok.Data;
 import java.awt.image.BufferedImage;
 import java.time.LocalDateTime;
@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
  * 图形验证码实体类
  */
 @Data
-public class ImageCode extends SmsCode {
+public class ImageCode extends ValidateCode {
 
     //图形验证码
     private BufferedImage image;

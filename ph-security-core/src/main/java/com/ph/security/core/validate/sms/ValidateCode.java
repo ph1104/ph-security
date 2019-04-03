@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
  * 验证码实体类
  */
 @Data
-public class SmsCode {
+public class ValidateCode {
 
     //验证码
     private String code;
@@ -18,12 +18,12 @@ public class SmsCode {
     //过期时间
     private LocalDateTime expireTime;
 
-    public SmsCode(String code, LocalDateTime expireTime) {
+    public ValidateCode(String code, LocalDateTime expireTime) {
         this.code = code;
         this.expireTime = expireTime;
     }
 
-    public SmsCode(String code, int expireIn) {
+    public ValidateCode(String code, int expireIn) {
         this.code = code;
         this.expireTime = LocalDateTime.now().plusSeconds(expireIn);
     }
