@@ -2,14 +2,17 @@ package com.ph.security.core.validate;
 
 
 import com.ph.security.core.constant.CommonConstant;
+import com.ph.security.core.properties.SecurityProperties;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.social.connect.web.HttpSessionSessionStrategy;
 import org.springframework.social.connect.web.SessionStrategy;
 import org.springframework.stereotype.Component;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.context.request.ServletWebRequest;
@@ -20,6 +23,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author penghui
@@ -31,16 +36,28 @@ import java.io.IOException;
 @Data
 @Slf4j
 @Component
-public class ValidateCodeFilter extends OncePerRequestFilter {
+public class ValidateCodeFilter extends OncePerRequestFilter implements InitializingBean {
 
 
     private SessionStrategy sessionStrategy = new HttpSessionSessionStrategy();
+    private AntPathMatcher antPathMatcher = new AntPathMatcher();
 
     @Autowired
     private AuthenticationFailureHandler authenticationFailureHandler;
+    @Autowired
+    private SecurityProperties securityProperties;
+
+    private Set<String> urls = new HashSet<>();
 
 
-
+    @Override
+    public void afterPropertiesSet() throws ServletException {
+        super.afterPropertiesSet();
+        String[] urlsInConfig = StringUtils.splitByWholeSeparatorPreserveAllTokens(securityProperties.getCode().getImage().getUrl(),",");
+        for (String url: urlsInConfig) {
+            urls.add(url);
+        }
+    }
 
     /**
      *  验证前端输入的验证码和sesion中保存的是否一致
@@ -57,9 +74,14 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
 
-        if(StringUtils.equals("/userlogin",httpServletRequest.getRequestURI())
-                && StringUtils.endsWithIgnoreCase(httpServletRequest.getMethod(),"post")){
+        boolean flag = false;
+        for(String url: urls) {
+            if(antPathMatcher.match(url,httpServletRequest.getRequestURI())){
+                flag = true;
+            }
+        }
 
+        if(flag){
             //进行校验
             try{
                 validate(new ServletWebRequest(httpServletRequest));
