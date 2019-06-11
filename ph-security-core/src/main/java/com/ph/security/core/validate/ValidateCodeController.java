@@ -25,7 +25,6 @@ import java.util.Random;
 
 /**
  * @author penghui
- * @date 2019\4\2 0002   15:23
  *
  * 图形验证码controller
  */

@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 
 /**
  * @author penghui
- * @date 2019\4\2 0002   13:16
  *
  * 图形验证码实体类
  */

@@ -4,7 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author penghui
- * @date 2019\4\3 0003   16:45
  *
  * 发送短信验证码的默认实现
  */

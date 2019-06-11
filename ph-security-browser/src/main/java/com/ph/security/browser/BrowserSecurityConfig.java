@@ -21,7 +21,6 @@ import javax.sql.DataSource;
 
 /**
  * @author penghui
- * @date 2019\4\1 0001   9:31
  */
 @Configuration
 public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -57,6 +56,19 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
         return  jdbcTokenRepository;
     }
 
+    /**
+     * SpringSecurity:    一系列的过滤器链
+     * UsernamePasswordAuthenticationFilter  ------> BasicAuthenticationFilter  ------->  ExcepionTranslationFilter ------->  FilterSecurityInterceptor
+     * UsernamePasswordAuthenticationFilter：基于用户名密码的认证，校验用户名和密码等信息
+     * BasicAuthenticationFilter：基于HttpBasic的认证，校验请求头中是否有basic认证信息
+     * ExceptionTranslationFilter ：处理后面的拦截器抛出来的异常信息
+     * FilterSecurityInterceptor: 处理授权信息，即.authorizeRequests()方法后面的一些处理，例如·
+     *                 .authorizeRequests()               //对请求做授权
+     *                 .anyRequest()                      //任何请求
+     *                 .authenticated()                   //都需要身份认证
+     * @param http
+     * @throws Exception
+     */
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {

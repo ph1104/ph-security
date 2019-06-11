@@ -28,7 +28,6 @@ import java.util.Set;
 
 /**
  * @author penghui
- * @date 2019\4\2 0002   16:04
  *
  * 图形验证码过滤器
  *

@@ -4,7 +4,6 @@ import lombok.Data;
 
 /**
  * @author penghui
- * @date 2019\4\3 0003   16:33
  *
  * 短信验证码属性配置类
  */

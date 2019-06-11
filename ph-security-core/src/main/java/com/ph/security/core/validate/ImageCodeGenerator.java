@@ -10,7 +10,6 @@ import java.util.Random;
 
 /**
  * @author penghui
- * @date 2019\4\3 0003   14:29
  *
  * 图形验证码生成规则
  *

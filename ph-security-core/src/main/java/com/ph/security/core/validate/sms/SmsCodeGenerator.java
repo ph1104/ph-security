@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author penghui
- * @date 2019\4\3 0003   16:24
  *
  * 短信验证码生成规则实现
  */

@@ -5,7 +5,6 @@ import java.time.LocalDateTime;
 
 /**
  * @author penghui
- * @date 2019\4\3 0003   16:18
  *
  * 验证码实体类
  */

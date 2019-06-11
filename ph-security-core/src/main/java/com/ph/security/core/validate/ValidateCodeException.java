@@ -4,7 +4,6 @@ import org.springframework.security.core.AuthenticationException;
 
 /**
  * @author penghui
- * @date 2019\4\2 0002   16:54
  *
  * 图形验证码异常处理类
  */
